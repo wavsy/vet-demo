@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Icon from "./Icon";
-import { FAQ } from "@/lib/data";
+import { useI18n } from "./I18n";
 
 export default function Faq() {
+  const { t } = useI18n();
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -12,15 +13,15 @@ export default function Faq() {
       <div className="mx-auto max-w-4xl px-6">
         <div className="reveal text-center">
           <span className="text-sm font-bold uppercase tracking-[0.18em] text-brand-light">
-            Въпроси
+            {t.faq.eyebrow}
           </span>
           <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
-            Това, което хората питат най-често.
+            {t.faq.title}
           </h2>
         </div>
 
         <div className="mt-12 divide-y divide-ink/8 border-y border-ink/8">
-          {FAQ.map((f, i) => (
+          {t.faq.items.map((f, i) => (
             <div key={f.q} className="reveal">
               <button
                 onClick={() => setOpen(open === i ? null : i)}

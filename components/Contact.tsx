@@ -1,17 +1,21 @@
+"use client";
+
 import Icon from "./Icon";
 import OpenStatus from "./OpenStatus";
-import { CLINIC, HOURS } from "@/lib/data";
+import { useI18n } from "./I18n";
+import { CLINIC } from "@/lib/content";
 
 export default function Contact() {
+  const { t } = useI18n();
   return (
     <section id="kontakti" className="bg-cream py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <div className="reveal max-w-2xl">
           <span className="text-sm font-bold uppercase tracking-[0.18em] text-brand-light">
-            Контакти
+            {t.contact.eyebrow}
           </span>
           <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
-            Намерете ни в Лозенец.
+            {t.contact.title}
           </h2>
         </div>
 
@@ -20,7 +24,7 @@ export default function Contact() {
             <div className="rounded-[1.75rem] border border-ink/8 bg-white p-7 shadow-soft">
               <OpenStatus className="text-brand" />
               <dl className="mt-5 space-y-3 text-[15px]">
-                {HOURS.map((h) => (
+                {t.contact.hours.map((h) => (
                   <div key={h.day} className="flex justify-between gap-4">
                     <dt className="text-ink-soft">{h.day}</dt>
                     <dd className="font-semibold">
@@ -29,8 +33,8 @@ export default function Contact() {
                   </div>
                 ))}
                 <div className="flex justify-between gap-4 border-t border-ink/8 pt-3">
-                  <dt className="font-semibold text-alarm">Спешни случаи</dt>
-                  <dd className="font-bold text-alarm">денонощно</dd>
+                  <dt className="font-semibold text-alarm">{t.contact.emergencyRow}</dt>
+                  <dd className="font-bold text-alarm">{t.contact.allDay}</dd>
                 </div>
               </dl>
             </div>
@@ -44,7 +48,7 @@ export default function Contact() {
                   <Icon name="phone" className="size-5" />
                 </span>
                 <span>
-                  <span className="block text-sm text-ink-soft">Регистратура</span>
+                  <span className="block text-sm text-ink-soft">{t.contact.reception}</span>
                   <span className="block font-bold">{CLINIC.phone}</span>
                 </span>
               </a>
@@ -56,7 +60,7 @@ export default function Contact() {
                   <Icon name="mail" className="size-5" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-sm text-ink-soft">Имейл</span>
+                  <span className="block text-sm text-ink-soft">{t.contact.email}</span>
                   <span className="block truncate font-bold">{CLINIC.email}</span>
                 </span>
               </a>
@@ -65,8 +69,8 @@ export default function Contact() {
                   <Icon name="pin" className="size-5" />
                 </span>
                 <span>
-                  <span className="block text-sm text-ink-soft">Адрес</span>
-                  <span className="block font-bold">{CLINIC.address}</span>
+                  <span className="block text-sm text-ink-soft">{t.contact.address}</span>
+                  <span className="block font-bold">{t.address}</span>
                 </span>
               </div>
             </div>
@@ -74,10 +78,10 @@ export default function Contact() {
 
           <div className="reveal overflow-hidden rounded-[1.75rem] border border-ink/8 bg-white shadow-soft">
             <iframe
-              title="Карта"
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                CLINIC.mapsQuery
-              )}&z=16&hl=bg&output=embed`}
+              title={t.contact.map}
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(CLINIC.mapsQuery)}&z=16&hl=${
+                t.lang
+              }&output=embed`}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="h-full min-h-[26rem] w-full border-0 grayscale-[35%]"

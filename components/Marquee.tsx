@@ -1,25 +1,16 @@
-import Icon from "./Icon";
+"use client";
 
-const WORDS = [
-  "Профилактика",
-  "Ваксинация",
-  "Хирургия",
-  "Ехография",
-  "Дигитален рентген",
-  "Лаборатория на място",
-  "Зъбна профилактика",
-  "Микрочип и паспорт",
-  "Спешен прием 24/7",
-  "Зоомагазин",
-];
+import Icon from "./Icon";
+import { useI18n } from "./I18n";
 
 export default function Marquee() {
+  const { t } = useI18n();
   return (
     <div className="relative overflow-hidden border-y border-ink/8 bg-white py-5">
       <div className="marquee-track flex w-max items-center gap-10 pr-10">
         {[0, 1].map((pass) => (
           <div key={pass} className="flex items-center gap-10" aria-hidden={pass === 1}>
-            {WORDS.map((w) => (
+            {t.marquee.map((w) => (
               <span
                 key={w}
                 className="flex shrink-0 items-center gap-4 text-lg font-semibold tracking-tight text-ink-soft"

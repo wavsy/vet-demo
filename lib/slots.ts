@@ -41,11 +41,7 @@ export function nextAvailability(count = 3) {
     d.setDate(base.getDate() + i);
     const free = slotsFor(d).filter((s) => s.free).map((s) => s.time);
     if (free.length) {
-      return {
-        date: d,
-        label: i === 0 ? "днес" : i === 1 ? "утре" : null,
-        times: free.slice(0, count),
-      };
+      return { date: d, offset: i, times: free.slice(0, count) };
     }
   }
   return null;

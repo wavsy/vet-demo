@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     description: "Запишете час онлайн за минута. Прозрачни цени, спешен прием 24/7.",
     images: ["/og.jpg"],
   },
+  alternates: { canonical: "/", languages: { bg: "/", en: "/en" } },
   robots: { index: false, follow: false },
 };
 
