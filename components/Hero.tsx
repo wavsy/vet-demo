@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Counter from "./Counter";
 import Icon from "./Icon";
-import OpenStatus from "./OpenStatus";
+import NextSlots from "./NextSlots";
 import { CLINIC } from "@/lib/data";
 
 export default function Hero() {
@@ -100,28 +100,7 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
           </div>
 
-          <div className="glass absolute -bottom-8 left-3 w-[min(21rem,88%)] rounded-3xl p-5 shadow-lift sm:-left-10">
-            <div className="flex items-center gap-3">
-              <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-white/12 text-white">
-                <Icon name="clock" className="size-5" />
-              </span>
-              <div className="min-w-0">
-                <div className="text-sm font-semibold">Свободни часове днес</div>
-                <OpenStatus className="text-white/60" />
-              </div>
-            </div>
-            <div className="mt-4 flex gap-2">
-              {["14:30", "16:00", "18:45"].map((t) => (
-                <a
-                  key={t}
-                  href="#chas"
-                  className="flex-1 rounded-xl border border-white/15 bg-white/5 py-2 text-center text-sm font-semibold transition hover:bg-white hover:text-ink"
-                >
-                  {t}
-                </a>
-              ))}
-            </div>
-          </div>
+          <NextSlots />
 
           <div className="glass absolute -right-2 top-8 hidden items-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold shadow-lift lg:flex">
             <span className="grid size-7 place-items-center rounded-full bg-emerald-400/20 text-emerald-300">

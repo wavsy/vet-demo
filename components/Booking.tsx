@@ -3,46 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import Icon from "./Icon";
 import { ANIMALS, CLINIC, SERVICES, TEAM, priceLabel } from "@/lib/data";
+import { slotsFor, ymd } from "@/lib/slots";
 
 const WEEKDAYS = ["нед", "пон", "вт", "ср", "чет", "пет", "съб"];
 const MONTHS = [
   "януари", "февруари", "март", "април", "май", "юни",
   "юли", "август", "септември", "октомври", "ноември", "декември",
 ];
-
-function ymd(d: Date) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
-    d.getDate()
-  ).padStart(2, "0")}`;
-}
-
-/** Deterministic "busy" slots so the same day always looks the same. */
-function hash(s: string) {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return Math.abs(h);
-}
-
-function slotsFor(date: Date) {
-  const day = date.getDay();
-  const start = day === 0 ? 10 * 60 : day === 6 ? 9 * 60 : 8 * 60 + 30;
-  const end = day === 0 ? 15 * 60 : day === 6 ? 17 * 60 : 19 * 60;
-
-  // An hour that has already passed today must never be bookable.
-  const now = new Date();
-  const isToday = ymd(now) === ymd(date);
-  const cutoff = isToday ? now.getHours() * 60 + now.getMinutes() + 60 : -1;
-
-  const out: { time: string; free: boolean }[] = [];
-  for (let m = start; m <= end; m += 30) {
-    const time = `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
-    out.push({ time, free: m > cutoff && hash(ymd(date) + time) % 10 > 3 });
-  }
-  return out;
-}
 
 function icsFile(opts: {
   date: Date;
