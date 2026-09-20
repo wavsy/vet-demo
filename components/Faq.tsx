@@ -15,7 +15,7 @@ export default function Faq() {
           <span className="text-sm font-bold uppercase tracking-[0.18em] text-brand-light">
             {t.faq.eyebrow}
           </span>
-          <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
+          <h2 className="reveal wipe mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
             {t.faq.title}
           </h2>
         </div>

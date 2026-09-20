@@ -11,7 +11,7 @@ export default function Emergency() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="relative overflow-hidden bg-ink py-20 text-white md:py-28">
+    <section className="cursor-glow relative overflow-hidden bg-ink py-20 text-white md:py-28">
       <Image src="/images/cat-dark.jpg" alt="" fill sizes="100vw" className="object-cover opacity-25" />
       <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/40" />
 
@@ -22,7 +22,7 @@ export default function Emergency() {
               <Icon name="alert" className="size-4" />
               {t.emergency.badge}
             </span>
-            <h2 className="mt-6 text-4xl font-extrabold tracking-[-0.03em] sm:text-5xl">
+            <h2 className="reveal wipe mt-6 text-4xl font-extrabold tracking-[-0.03em] sm:text-5xl">
               {t.emergency.title1}
               <br />
               {t.emergency.title2}

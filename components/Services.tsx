@@ -36,7 +36,7 @@ export default function Services() {
             <span className="text-sm font-bold uppercase tracking-[0.18em] text-brand-light">
               {t.services.eyebrow}
             </span>
-            <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
+            <h2 className="reveal wipe mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
               {t.services.title}
             </h2>
             <p className="mt-4 text-lg text-ink-soft">{t.services.lead}</p>
@@ -70,10 +70,10 @@ export default function Services() {
                   e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
                   e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
                 }}
-                className={`reveal spotlight group relative rounded-[1.75rem] border p-6 text-left transition-all duration-300 ${
+                className={`reveal spotlight tilt group relative rounded-[1.75rem] border p-6 text-left ${
                   on
                     ? "border-brand bg-brand text-white shadow-lift"
-                    : "border-ink/8 bg-white shadow-soft hover:-translate-y-1 hover:shadow-lift"
+                    : "border-ink/8 bg-white shadow-soft hover:shadow-lift"
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -135,7 +135,7 @@ export default function Services() {
             </div>
             <button
               onClick={book}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 font-semibold text-ink transition hover:bg-mint sm:w-auto"
+              className="magnetic sweep on-light inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 font-semibold text-ink transition hover:bg-mint sm:w-auto"
             >
               {t.services.bookThis}
               <Icon name="arrow" className="size-5" />

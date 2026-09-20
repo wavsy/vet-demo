@@ -79,6 +79,7 @@ export default function Booking() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [done, setDone] = useState(false);
+  const [dir, setDir] = useState<1 | -1>(1);
 
   useEffect(() => setMounted(true), []);
   useEffect(() => setVet(b.anyVet), [b.anyVet]);
@@ -88,6 +89,7 @@ export default function Booking() {
       const detail = (e as CustomEvent<string[]>).detail;
       if (detail?.length) {
         setPicked(detail);
+        setDir(1);
         setStep(1);
       }
     };
@@ -148,15 +150,17 @@ export default function Booking() {
     URL.revokeObjectURL(url);
   };
 
+  const stepStyle = { ["--from" as string]: dir === 1 ? "28px" : "-28px" } as React.CSSProperties;
+
   const dayLabel = (d: Date) => `${b.weekdays[d.getDay()]}, ${d.getDate()} ${b.months[d.getMonth()]}`;
 
   return (
-    <section id="chas" className="relative bg-brand-dark py-20 text-white md:py-28">
+    <section id="chas" className="cursor-glow relative overflow-hidden bg-brand-dark py-20 text-white md:py-28">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
       <div className="mx-auto max-w-5xl px-6">
         <div className="reveal text-center">
           <span className="text-sm font-bold uppercase tracking-[0.18em] text-brand-light">{b.eyebrow}</span>
-          <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.03em] sm:text-5xl">{b.title}</h2>
+          <h2 className="reveal wipe mt-3 text-4xl font-extrabold tracking-[-0.03em] sm:text-5xl">{b.title}</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-white/70">{b.lead}</p>
         </div>
 
@@ -186,8 +190,17 @@ export default function Booking() {
           <div className="p-6 sm:p-10 md:min-h-[32rem]">
             {done ? (
               <div className="pop-in text-center">
-                <span className="mx-auto grid size-20 place-items-center rounded-full bg-mint text-brand">
-                  <Icon name="check" className="size-10" />
+                <span className="check-ring mx-auto grid size-20 place-items-center rounded-full bg-mint text-brand">
+                  <svg viewBox="0 0 48 48" className="size-11" fill="none" aria-hidden="true">
+                    <path
+                      className="check-path"
+                      d="m13 25 8 8 15-17"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </span>
                 <h3 className="mt-6 text-3xl font-extrabold tracking-tight">{b.doneTitle}</h3>
                 <p className="mt-2 text-ink-soft">{b.doneLead(phone)}</p>
@@ -259,7 +272,7 @@ export default function Booking() {
             ) : (
               <>
                 {step === 0 && (
-                  <div className="pop-in">
+                  <div key="s0" className="step-in" style={stepStyle}>
                     <h3 className="text-2xl font-bold tracking-tight">{b.q1}</h3>
                     <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
                       {b.animals.map((a) => (
@@ -290,7 +303,7 @@ export default function Booking() {
                 )}
 
                 {step === 1 && (
-                  <div className="pop-in">
+                  <div key="s1" className="step-in" style={stepStyle}>
                     <h3 className="text-2xl font-bold tracking-tight">{b.q2}</h3>
                     <p className="mt-1 text-ink-soft">{b.q2sub}</p>
                     <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -338,7 +351,7 @@ export default function Booking() {
                 )}
 
                 {step === 2 && (
-                  <div className="pop-in">
+                  <div key="s2" className="step-in" style={stepStyle}>
                     <h3 className="text-2xl font-bold tracking-tight">{b.q3}</h3>
 
                     {!mounted ? (
@@ -414,7 +427,7 @@ export default function Booking() {
                 )}
 
                 {step === 3 && (
-                  <div className="pop-in">
+                  <div key="s3" className="step-in" style={stepStyle}>
                     <h3 className="text-2xl font-bold tracking-tight">{b.q4}</h3>
                     <div className="mt-6 grid gap-4 sm:grid-cols-2">
                       <label className="block">
@@ -459,7 +472,10 @@ export default function Booking() {
 
                 <div className="mt-8 flex items-center justify-between gap-4 border-t border-ink/8 pt-6">
                   <button
-                    onClick={() => setStep((s) => Math.max(0, s - 1))}
+                    onClick={() => {
+                      setDir(-1);
+                      setStep((s) => Math.max(0, s - 1));
+                    }}
                     className={`rounded-full px-5 py-3 font-semibold text-ink-soft transition hover:text-ink ${
                       step === 0 ? "invisible" : ""
                     }`}
@@ -468,8 +484,12 @@ export default function Booking() {
                   </button>
                   <button
                     disabled={!canNext}
-                    onClick={() => (step === 3 ? setDone(true) : setStep((s) => s + 1))}
-                    className="inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 font-semibold text-white transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-ink/12 disabled:text-ink-soft"
+                    onClick={() => {
+                      if (step === 3) return setDone(true);
+                      setDir(1);
+                      setStep((s) => s + 1);
+                    }}
+                    className="magnetic sweep on-light inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 font-semibold text-white transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-ink/12 disabled:text-ink-soft"
                   >
                     {step === 3 ? b.confirm : b.next}
                     <Icon name="arrow" className="size-5" />

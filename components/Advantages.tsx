@@ -11,7 +11,7 @@ export default function Advantages() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-20">
           <div className="reveal relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[2.25rem] shadow-lift">
+            <div className="reveal zoom relative aspect-[4/3] overflow-hidden rounded-[2.25rem] shadow-lift">
               <Image
                 src="/images/care.jpg"
                 alt={t.advantages.title1}
@@ -30,7 +30,7 @@ export default function Advantages() {
             <span className="reveal text-sm font-bold uppercase tracking-[0.18em] text-brand-light">
               {t.advantages.eyebrow}
             </span>
-            <h2 className="reveal mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
+            <h2 className="reveal wipe mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
               {t.advantages.title1}
               <br />
               {t.advantages.title2}

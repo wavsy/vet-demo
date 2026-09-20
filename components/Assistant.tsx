@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Icon from "./Icon";
 import { LogoMark } from "./Logo";
 import { useI18n } from "./I18n";
+import Typewriter from "./Typewriter";
 import { answer, type Answer } from "@/lib/assistant";
 
 type Msg = {
@@ -11,7 +12,8 @@ type Msg = {
   from: "bot" | "user";
   text: string;
   actions?: Answer["actions"];
-  typed?: boolean;
+  /** Older messages are already on screen and must not retype themselves. */
+  settled?: boolean;
 };
 
 let seq = 0;
@@ -27,7 +29,7 @@ export default function Assistant() {
 
   // Greeting is rebuilt when the language changes, so the panel is never mixed.
   useEffect(() => {
-    setMsgs([{ id: ++seq, from: "bot", text: t.assistant.greeting, typed: true }]);
+    setMsgs([{ id: ++seq, from: "bot", text: t.assistant.greeting, settled: true }]);
   }, [t]);
 
   useEffect(() => {
@@ -38,6 +40,9 @@ export default function Assistant() {
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 250);
   }, [open]);
+
+  const settle = (id: number) =>
+    setMsgs((m) => m.map((x) => (x.id === id ? { ...x, settled: true } : x)));
 
   const ask = (question: string) => {
     const q = question.trim();
@@ -50,7 +55,9 @@ export default function Assistant() {
     const delay = 420 + Math.min(900, a.text.length * 4);
     setTimeout(() => {
       setThinking(false);
-      setMsgs((m) => [...m, { id: ++seq, from: "bot", text: a.text, actions: a.actions }]);
+      const id = ++seq;
+      setMsgs((m) => [...m, { id, from: "bot", text: a.text, actions: a.actions }]);
+      setTimeout(() => settle(id), 120 + a.text.length * 1.2);
     }, delay);
   };
 
@@ -111,9 +118,22 @@ export default function Assistant() {
                       : "rounded-bl-md border border-ink/8 bg-white text-ink shadow-soft"
                   }`}
                 >
-                  {m.text}
+                  {m.from === "bot" && !m.settled ? (
+                    <Typewriter
+                      text={m.text}
+                      onTick={() =>
+                        listRef.current?.scrollTo({ top: listRef.current.scrollHeight })
+                      }
+                    />
+                  ) : (
+                    m.text
+                  )}
                   {m.actions && (
-                    <div className="mt-3 flex flex-wrap gap-2">
+                    <div
+                      className={`mt-3 flex flex-wrap gap-2 transition-opacity duration-500 ${
+                        m.from === "bot" && !m.settled ? "opacity-0" : "opacity-100"
+                      }`}
+                    >
                       {m.actions.map((a) => (
                         <a
                           key={a.label + a.href}

@@ -11,7 +11,7 @@ export default function Hero() {
   const { t } = useI18n();
 
   return (
-    <section className="grain relative -mt-[84px] overflow-hidden bg-ink pt-[84px] text-white">
+    <section className="grain cursor-glow relative -mt-[84px] overflow-hidden bg-ink pt-[84px] text-white">
       <div
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(130%_100%_at_8%_-10%,#1b6157_0%,#0e3a33_45%,#071c18_100%)]"
@@ -27,15 +27,18 @@ export default function Hero() {
       <div aria-hidden className="absolute inset-0 grid-lines" />
 
       {/* Full-bleed portrait that dissolves into the background instead of sitting in a box */}
-      <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 hidden w-[54%] lg:block">
-        <div className="relative h-full w-full [mask-image:linear-gradient(to_right,transparent_0%,#000_38%,#000_100%)]">
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 hidden w-[54%] overflow-hidden lg:block">
+        <div
+          data-parallax="0.07"
+          className="absolute inset-x-0 -top-28 -bottom-28 [mask-image:linear-gradient(to_right,transparent_0%,#000_38%,#000_100%)]"
+        >
           <Image
             src="/images/hero.jpg"
             alt=""
             fill
             priority
             sizes="54vw"
-            className="object-cover object-[42%_center]"
+            className="ken-burns object-cover object-[42%_center]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-ink/35" />
           <div className="absolute inset-0 bg-gradient-to-l from-ink/45 to-transparent" />
@@ -44,23 +47,26 @@ export default function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-10 lg:pb-32 lg:pt-20">
         <div className="lg:max-w-[44rem]">
-          <span className="glass inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-sm font-semibold text-white/90">
+          <span className="rise glass inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-sm font-semibold text-white/90">
             <span className="size-1.5 rounded-full bg-emerald-300 dot-live" />
             {t.hero.badge}
           </span>
 
-          <h1 className="mt-8 text-balance text-[2.75rem] font-extrabold leading-[1] tracking-[-0.04em] sm:text-[3.8rem] lg:text-[4.35rem]">
+          <h1 style={{ ["--d" as string]: "90ms" }}
+            className="rise mt-8 text-balance text-[2.75rem] font-extrabold leading-[1] tracking-[-0.04em] sm:text-[3.8rem] lg:text-[4.35rem]">
             {t.hero.title1}
             <br />
             <span className="text-glow">{t.hero.title2}</span>
           </h1>
 
-          <p className="mt-7 max-w-lg text-lg leading-relaxed text-white/65">{t.hero.lead}</p>
+          <p style={{ ["--d" as string]: "200ms" }} className="rise mt-7 max-w-lg text-lg leading-relaxed text-white/65">
+            {t.hero.lead}
+          </p>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div style={{ ["--d" as string]: "300ms" }} className="rise mt-9 flex flex-col gap-3 sm:flex-row">
             <a
               href="#chas"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-lg font-semibold text-ink shadow-lift transition hover:bg-mint"
+              className="magnetic sweep on-light group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-lg font-semibold text-ink shadow-lift transition hover:bg-mint"
             >
               <Icon name="calendar" className="size-5" />
               {t.hero.ctaBook}
@@ -68,7 +74,7 @@ export default function Hero() {
             </a>
             <a
               href={`tel:${CLINIC.emergencyHref}`}
-              className="glass inline-flex items-center justify-center gap-2 rounded-full px-7 py-4 text-lg font-semibold text-white transition hover:border-alarm hover:bg-alarm"
+              className="magnetic sweep glass inline-flex items-center justify-center gap-2 rounded-full px-7 py-4 text-lg font-semibold text-white transition hover:border-alarm hover:bg-alarm"
             >
               <Icon name="alert" className="size-5" />
               {t.hero.ctaEmergency}
@@ -88,7 +94,7 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent" />
           </div>
 
-          <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-white/10 pt-7 lg:mt-14">
+          <dl style={{ ["--d" as string]: "400ms" }} className="rise mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-white/10 pt-7 lg:mt-14">
             <div>
               <dt className="sr-only">{t.hero.statReviews}</dt>
               <dd className="flex items-baseline gap-1.5 text-3xl font-extrabold tracking-tight">

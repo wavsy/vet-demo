@@ -4,6 +4,7 @@ import Advantages from "./Advantages";
 import Assistant from "./Assistant";
 import Booking from "./Booking";
 import Contact from "./Contact";
+import Effects from "./Effects";
 import Emergency from "./Emergency";
 import Faq from "./Faq";
 import Footer from "./Footer";
@@ -45,6 +46,7 @@ export default function Site({ lang }: { lang: Lang }) {
       <MobileBar />
       <Assistant />
       <Reveal />
+      <Effects />
     </I18nProvider>
   );
 }

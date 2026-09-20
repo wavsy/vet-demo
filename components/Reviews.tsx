@@ -15,7 +15,7 @@ export default function Reviews() {
             <span className="text-sm font-bold uppercase tracking-[0.18em] text-brand-light">
               {t.reviews.eyebrow}
             </span>
-            <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
+            <h2 className="reveal wipe mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
               {t.reviews.title1}
               <br />
               {t.reviews.title2}
@@ -33,7 +33,7 @@ export default function Reviews() {
               </div>
             </div>
 
-            <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-[1.75rem] shadow-soft">
+            <div className="reveal zoom relative mt-8 aspect-[4/3] overflow-hidden rounded-[1.75rem] shadow-soft">
               <Image
                 src="/images/friends.jpg"
                 alt=""

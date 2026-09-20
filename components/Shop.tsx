@@ -14,7 +14,7 @@ export default function Shop() {
             <span className="reveal text-sm font-bold uppercase tracking-[0.18em] text-brand">
               {t.shop.eyebrow}
             </span>
-            <h2 className="reveal mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
+            <h2 className="reveal wipe mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
               {t.shop.title1}
               <br />
               {t.shop.title2}
@@ -36,7 +36,7 @@ export default function Shop() {
             </div>
           </div>
 
-          <div className="reveal relative aspect-[4/5] overflow-hidden rounded-[2.25rem] shadow-lift">
+          <div className="reveal zoom relative aspect-[4/5] overflow-hidden rounded-[2.25rem] shadow-lift">
             <Image
               src="/images/shop.jpg"
               alt={t.shop.eyebrow}

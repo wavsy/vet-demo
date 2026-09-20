@@ -14,7 +14,7 @@ export default function Contact() {
           <span className="text-sm font-bold uppercase tracking-[0.18em] text-brand-light">
             {t.contact.eyebrow}
           </span>
-          <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
+          <h2 className="reveal wipe mt-3 text-4xl font-extrabold tracking-[-0.03em] text-ink sm:text-5xl">
             {t.contact.title}
           </h2>
         </div>
