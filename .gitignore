@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# служебни файлове за редактори и асистенти
+AGENTS.md
+CLAUDE.md
+.claude/
+.cursor/
