@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ветеринарна клиника „Лапа“ — демо
 
-## Getting Started
+Демонстрационен сайт за **измислена** ветеринарна клиника в София. Не е клиентски
+проект и клиниката не съществува — служи за показване пред потенциални клиенти от
+бранша, за да видят какво получават, преди да подпишем договор.
 
-First, run the development server:
+Живо: <https://vet-lapa.vercel.app> · английска версия `/en` · QR за срещи `/qr`
+Сайтът е `noindex`, за да не влезе измислената клиника в Google.
+
+## Какво има вътре
+
+- **Онлайн записване**, което работи до край: избор на животно, услуги, ден и час,
+  потвърждение и **`.ics` файл**, който се отваря в календара с адрес и напомняне.
+- **Калкулатор на цени** в евро с левова равностойност за ориентир.
+- **Асистент** (долу вдясно), който отговаря от данните на сайта — цени, работно
+  време, спешни случаи, пътуване, плащане. Правилов, без външен AI модел и без разход.
+- **Две езикови версии**: `/` е български, `/en` е английски.
+- Спешна секция с първа помощ, екип, отзиви, зоомагазин, въпроси, контакти с карта.
+
+## Откъде идват данните
+
+Цените са изравнени с публични ценоразписи на софийски клиники (New Vita,
+„Лозенец“, Прима Вет) към септември 2026 г. и са в евро — България е в еврозоната
+от 01.01.2026 г., фиксиран курс 1 € = 1,95583 лв.; задължителното двойно
+обозначаване приключи на 09.08.2026 г., затова левът остава само за ориентир.
+Текстовете за първа помощ са сверени по ветеринарни източници.
+
+Снимките са CC0 от StockSnap. Отзивите, имената на екипа и телефоните са измислени.
+
+## Работа по проекта
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
+
+npm test             # 22 модулни теста (node:test)
+npm run build && npm start
+npm run test:e2e     # 8 теста в браузър срещу вдигнат сървър
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm run test:e2e` ползва вече инсталирания Chrome — не сваля браузър. Срещу
+живия адрес: `E2E_URL=https://vet-lapa.vercel.app npm run test:e2e`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Деплой на ръка (няма автоматичен от `main`):
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+vercel --prod
+vercel alias set <deployment-url> vet-lapa.vercel.app
+```
 
-## Learn More
+## Структура
 
-To learn more about Next.js, take a look at the following resources:
+| Път | Какво е |
+|---|---|
+| `lib/content.ts` | Всички текстове, за двата езика. Тук се променя съдържание. |
+| `lib/assistant.ts` | Темите и отговорите на асистента. |
+| `lib/slots.ts` | Свободните часове; минал час днес никога не е свободен. |
+| `components/Site.tsx` | Съставя страницата; `app/page.tsx` е BG, `app/en/page.tsx` е EN. |
+| `tests/` | Модулни (`*.test.mts`) и браузърни (`e2e.mjs`) тестове. |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Ако добавите текст само на единия език, `npm test` пада — речниците се сравняват
+ключ по ключ.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Изработка: [Wavsy](https://wavsy.dev)
