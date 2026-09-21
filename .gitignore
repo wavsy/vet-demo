@@ -40,8 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# служебни файлове за редактори и асистенти
+# генерирани от инструментите локално
 AGENTS.md
-CLAUDE.md
-.claude/
-.cursor/
+.idea/
+.vscode/
