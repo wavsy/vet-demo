@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { nextAvailability, slotsFor, ymd } from "../lib/slots.ts";
+import { nextAvailability, slotsFor, VETS, ymd } from "../lib/slots.ts";
 
 const at = (days: number) => {
   const d = new Date();
@@ -41,4 +41,34 @@ test("the next availability is a real free slot on that day", () => {
 
 test("ymd formats a date the way the ics file needs it", () => {
   assert.equal(ymd(new Date(2026, 8, 21)), "2026-09-21");
+});
+
+test("choosing a vet can only narrow the free hours, never widen them", () => {
+  const day = at(2);
+  const any = new Set(slotsFor(day).filter((s) => s.free).map((s) => s.time));
+  for (let v = 0; v < VETS; v++) {
+    for (const s of slotsFor(day, v)) {
+      if (s.free) assert.ok(any.has(s.time), `${s.time} is free for vet ${v} but not for "any"`);
+    }
+  }
+});
+
+test("an hour open for nobody is not offered under \"any vet\"", () => {
+  const day = at(4);
+  for (const s of slotsFor(day)) {
+    if (!s.free) {
+      for (let v = 0; v < VETS; v++) {
+        const forVet = slotsFor(day, v).find((x) => x.time === s.time);
+        assert.equal(forVet?.free, false, `${s.time} is taken for "any" but free for vet ${v}`);
+      }
+    }
+  }
+});
+
+test("the vets do not all keep identical diaries", () => {
+  const day = at(5);
+  const shapes = new Set(
+    Array.from({ length: VETS }, (_, v) => slotsFor(day, v).map((s) => (s.free ? "1" : "0")).join(""))
+  );
+  assert.ok(shapes.size > 1, "every vet has the same availability");
 });

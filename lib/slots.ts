@@ -14,7 +14,10 @@ function hash(s: string) {
   return Math.abs(h);
 }
 
-export function slotsFor(date: Date) {
+/** How many vets take appointments. Index 0..VETS-1; anything else means "any vet". */
+export const VETS = 3;
+
+export function slotsFor(date: Date, vet?: number) {
   const day = date.getDay();
   const start = day === 0 ? 10 * 60 : day === 6 ? 9 * 60 : 8 * 60 + 30;
   const end = day === 0 ? 15 * 60 : day === 6 ? 17 * 60 : 19 * 60;
@@ -24,10 +27,19 @@ export function slotsFor(date: Date) {
   const isToday = ymd(now) === ymd(date);
   const cutoff = isToday ? now.getHours() * 60 + now.getMinutes() + 60 : -1;
 
+  // Each vet keeps their own diary. Without a chosen vet an hour is offered
+  // when at least one of them is free — which is why picking a vet can only
+  // ever narrow the list, never widen it.
+  const freeFor = (time: string, v: number) => hash(`${ymd(date)}${time}#${v}`) % 10 > 2;
+
   const out: { time: string; free: boolean }[] = [];
   for (let m = start; m <= end; m += 30) {
     const time = `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
-    out.push({ time, free: m > cutoff && hash(ymd(date) + time) % 10 > 3 });
+    const open =
+      vet === undefined || vet < 0 || vet >= VETS
+        ? Array.from({ length: VETS }, (_, v) => v).some((v) => freeFor(time, v))
+        : freeFor(time, vet);
+    out.push({ time, free: m > cutoff && open });
   }
   return out;
 }

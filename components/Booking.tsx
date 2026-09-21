@@ -75,14 +75,13 @@ export default function Booking() {
   const [picked, setPicked] = useState<string[]>([]);
   const [dayIndex, setDayIndex] = useState(0);
   const [time, setTime] = useState<string | null>(null);
-  const [vet, setVet] = useState(b.anyVet);
+  const [vet, setVet] = useState(-1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [done, setDone] = useState(false);
   const [dir, setDir] = useState<1 | -1>(1);
 
   useEffect(() => setMounted(true), []);
-  useEffect(() => setVet(b.anyVet), [b.anyVet]);
 
   useEffect(() => {
     const onPick = (e: Event) => {
@@ -108,13 +107,22 @@ export default function Booking() {
   }, [mounted]);
 
   const day = days[dayIndex];
-  const slots = useMemo(() => (day ? slotsFor(day) : []), [day]);
+  const slots = useMemo(() => (day ? slotsFor(day, vet < 0 ? undefined : vet) : []), [day, vet]);
 
+  // Land on the first day this vet still has room, and drop a time that the
+  // chosen vet cannot actually take.
   useEffect(() => {
     if (!mounted) return;
-    const first = days.findIndex((d) => slotsFor(d).some((s) => s.free));
-    if (first > 0) setDayIndex(first);
-  }, [mounted, days]);
+    const pick = vet < 0 ? undefined : vet;
+    const first = days.findIndex((d) => slotsFor(d, pick).some((s) => s.free));
+    if (first >= 0 && !slotsFor(days[dayIndex], pick).some((s) => s.free)) setDayIndex(first);
+    setTime((current) =>
+      current && slotsFor(days[dayIndex], pick).some((s) => s.free && s.time === current)
+        ? current
+        : null
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mounted, vet, dayIndex, days]);
 
   const chosen = SERVICE_META.map((m, i) => ({ ...m, title: t.services.items[i].title })).filter(
     (s) => picked.includes(s.slug)
@@ -151,6 +159,13 @@ export default function Booking() {
   };
 
   const stepStyle = { ["--from" as string]: dir === 1 ? "28px" : "-28px" } as React.CSSProperties;
+
+  const vets = t.team.members.slice(0, 3);
+  const vetName = vet < 0 ? b.anyVet : vets[vet].name;
+  const shortName = (name: string) => {
+    const parts = name.split(" ");
+    return parts.length > 2 ? `${parts[0]} ${parts[parts.length - 1]}` : name;
+  };
 
   const dayLabel = (d: Date) => `${b.weekdays[d.getDay()]}, ${d.getDate()} ${b.months[d.getMonth()]}`;
 
@@ -233,7 +248,7 @@ export default function Booking() {
                     </div>
                     <div className="flex justify-between gap-4">
                       <dt className="text-ink-soft">{b.vet}</dt>
-                      <dd className="text-right font-semibold">{vet}</dd>
+                      <dd className="text-right font-semibold">{vetName}</dd>
                     </div>
                     <div className="flex justify-between gap-4 border-t border-ink/8 pt-3">
                       <dt className="text-ink-soft">{b.approx}</dt>
@@ -358,6 +373,30 @@ export default function Booking() {
                       <div className="mt-6 h-24 animate-pulse rounded-2xl bg-cream" />
                     ) : (
                       <>
+                        <div className="mt-6">
+                          <span className="text-sm font-semibold text-ink-soft">{b.vetLabel}</span>
+                          <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                            {[{ i: -1, label: b.anyVet }, ...vets.map((m, i) => ({ i, label: shortName(m.name) }))].map(
+                              (option) => (
+                                <button
+                                  key={option.i}
+                                  onClick={() => setVet(option.i)}
+                                  className={`rounded-2xl border px-3 py-3 text-[15px] font-semibold transition ${
+                                    vet === option.i
+                                      ? "border-brand bg-mint text-brand shadow-soft"
+                                      : "border-ink/10 text-ink-soft hover:border-brand/40"
+                                  }`}
+                                >
+                                  {option.label}
+                                </button>
+                              )
+                            )}
+                          </div>
+                          {vet >= 0 && (
+                            <p className="mt-2 text-sm text-ink-soft">{b.vetHint(vets[vet].name)}</p>
+                          )}
+                        </div>
+
                         <div className="no-scrollbar -mx-1 mt-6 flex gap-2 overflow-x-auto px-1 pb-2">
                           {days.map((d, i) => (
                             <button
@@ -408,19 +447,6 @@ export default function Booking() {
                           ))}
                         </div>
 
-                        <label className="mt-8 block">
-                          <span className="text-sm font-semibold text-ink-soft">{b.vetLabel}</span>
-                          <select
-                            value={vet}
-                            onChange={(e) => setVet(e.target.value)}
-                            className="mt-2 w-full appearance-none rounded-2xl border border-ink/12 bg-cream px-5 py-4 text-lg outline-none transition focus:border-brand focus:bg-white"
-                          >
-                            <option>{b.anyVet}</option>
-                            {t.team.members.slice(0, 3).map((m) => (
-                              <option key={m.name}>{m.name}</option>
-                            ))}
-                          </select>
-                        </label>
                       </>
                     )}
                   </div>
