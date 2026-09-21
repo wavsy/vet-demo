@@ -41,12 +41,9 @@ npm run test:e2e     # 8 теста в браузър срещу вдигнат 
 `npm run test:e2e` ползва вече инсталирания Chrome — не сваля браузър. Срещу
 живия адрес: `E2E_URL=https://vet-lapa.vercel.app npm run test:e2e`.
 
-Деплой на ръка (няма автоматичен от `main`):
-
-```bash
-vercel --prod
-vercel alias set <deployment-url> vet-lapa.vercel.app
-```
+Деплой: **автоматичен**. Всеки пуш в `main` отива живо на
+<https://vet-lapa.vercel.app>, а пул реквестите получават свой адрес за преглед.
+Ръчно, ако потрябва: `vercel --prod`.
 
 ## Структура
 
